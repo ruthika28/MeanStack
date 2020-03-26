@@ -1,0 +1,14 @@
+<div class="container">
+    <table class="table table-bordered">
+        <thead>
+            <th>UserId</th>
+            <th>Id</th>
+            <th>Ttile</th>            
+        </thead>
+        <tr *ngFor="let v of dataArray">
+            <td>{{v.userId}}</td>
+            <td>{{v.id}}</td>
+            <td>{{v.title}}</td>
+        </tr>
+    </table>
+</div>

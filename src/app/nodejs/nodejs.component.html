@@ -1,0 +1,12 @@
+<ul *ngFor="let v of data">
+    <li>{{v}}</li>
+</ul>
+<div class="form-group">
+    <label for="">Enter data</label>
+    <input type="text" class="form-control" #ref>
+</div>
+<div class="text-center">
+    <button class="btn btn-warning" (click)="sendData(ref.value)">
+        share data
+    </button>
+</div>
