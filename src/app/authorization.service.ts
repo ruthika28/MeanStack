@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, onErrorResumeNext } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class AuthorizationService implements HttpInterceptor {
     }
     //if token is present clone token and forward
     let clonedReqObj=req.clone({
-      headers:req.headers.set('Authorization','Bearer '+token)
+      setHeaders:{'Authorization':'Bearer '+token}
     });
     //forward to next interceptor/backend
     return next.handle(clonedReqObj);

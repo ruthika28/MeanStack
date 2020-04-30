@@ -13,6 +13,8 @@ export class LoginService {
   //inject HttpClient
   constructor(private hc:HttpClient) { }
   
+  isLoggedIn:boolean=false;
+  loggedInUsername:string;
   //a method to make http post request
   doLogin(userObj):Observable<any>
   {

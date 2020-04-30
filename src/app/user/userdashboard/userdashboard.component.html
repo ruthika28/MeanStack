@@ -1,8 +1,9 @@
 <a routerLink="/userprofile">userdashboard Profile</a>
 <div class="text-center">
     <h1>welcome {{username}}</h1>
-    <button (click)="sendTestReq()">Send Request</button>
 </div>
 <div>
 <router-outlet></router-outlet>
+<img [src]=userObj.profileImage width="80px" class="rounded" alt="no image found">
+
 </div>

@@ -25,7 +25,7 @@ const routes: Routes = [
   {path:'aboutus',component:AboutusComponent},
   {path:'contactus',component:ContactusComponent},
   {path:'admindashboard',component:AdmindashboardComponent},
-  {path:'userdashboard',component:UserdashboardComponent},
+  {path:'userdashboard/:username',component:UserdashboardComponent},
   {path:'technologies',component:TechnologiesComponent,children:[
     {path:'javascript',component:JavascriptComponent},
     {path:'nodejs',component:NodejsComponent},
@@ -34,7 +34,7 @@ const routes: Routes = [
   ]},
   //special route for any other route than mentioned
   //always should be at last 
-  {path:'**',component:PagenotfoundComponent}
+  //{path:'**',component:PagenotfoundComponent}
 ];
 
 @NgModule({

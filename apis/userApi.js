@@ -12,14 +12,86 @@ dbo.initDb();
 //import jsonwebtoken
 const jwt=require("jsonwebtoken")
 
+//import verify token middleware
+const verifyAndValidateToken=require('../middlewares/verifyToken');
 
-userApp.get('/readprofile/:username',(req,res)=>{
-    res.send({message:"user profile works"})
+
+
+
+userApp.get('/profile/:username',verifyAndValidateToken,(req,res,next)=>{
+    //res.send({message:'user profile works',data:''})
+    
+    console.log("userapi has a username",req.params.username);
+    let userCollectionObj=dbo.getDb().usercollectionobj;
+    userCollectionObj.findOne({username:req.params.username},(err,userObjFromDB)=>{
+        if(err)
+        {
+            next(err);
+        }
+        else if(userCollectionObj==null)
+        {
+            res.send({message:"user doesnot exist"});
+        }
+        else
+        {
+            res.send({message:"user existed",data:userObjFromDB});
+        }
+    })
+}
+);
+
+
+const cloudinary=require("cloudinary");
+const cloudinaryStorage=require("multer-storage-cloudinary");
+const multer=require("multer");
+
+//configure cloudinary
+cloudinary.config({
+    cloud_name:'dzka5oatn',
+    api_key:'687434899847193',
+    api_secret:'nF2zfkOyJFjmszFkN8jUxhrFoGE',
+}
+);
+//configure cloudinary storage details
+
+var storageForCloudinary=cloudinaryStorage({
+    cloudinary:cloudinary,
+    folder:'vnrfiles',
+    allowedFormats:['jpg','png','jpeg'],
+    filename:function(req,file,cb)
+    {
+        //cb=callback fn
+        cb(undefined,file.fieldname +'-'+Date.now());    
+    }
 });
 
+//configure multer
+var upload=multer({storage:storageForCloudinary});
 
-userApp.post('/register',(req,res)=>{
+
+
+
+
+
+
+//userRouter.use(exp.json())
+userApp.post('/register',upload.single('photo'),(req,res)=>{
     //check for username in db
+    //console.log("cdn link of uploaded image is ",req.file.secure_url);
+    
+    //prepare req.body
+    //to attch cdn link 
+    //convert string to json
+    req.body=JSON.parse(req.body.userObj);
+
+    req.body.profileImage=req.file.secure_url; 
+
+//remove key "photo"
+delete req.body.photo;
+
+    console.log("req body is", req.body);
+
+
     var userCollectionObj=dbo.getDb().usercollectionobj;
     userCollectionObj.findOne({username:req.body.username},(err,userObjFromDB)=>{
         if(err)
@@ -84,9 +156,12 @@ userApp.post('/login',(req,res)=>{
                         }
                         else
                         {
-                            res.send({message:signedToken,username:userObj.username});
+                            res.send({message:"success",token:signedToken,username:userObj.username});
                         }
                     })  
+
+
+
                 }
             });
         }

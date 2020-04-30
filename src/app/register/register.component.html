@@ -2,7 +2,7 @@
     <div class="col-3"></div>
     <div class="col-6">
         <h2>Register</h2>
-            <form #ref="ngForm" (ngSubmit)="submitForm(ref.value);ref.reset()">
+            <form #ref="ngForm" (ngSubmit)="submitForm(ref);">
                 <div class="form-group">
                     <label for="n">Name</label>
                     <input type="text" name="name" id="n" class="form-control" ngModel>
@@ -19,6 +19,14 @@
                     <label for="un">Date Of Birth</label>
                     <input type="date" name="dob" id="un" class="form-control" ngModel>
                 </div>
+                <!--profile image-->
+                <div class="form-group">
+                    <label for="">Upload Profile Image</label>
+                    <input type="file" name="photo" class="form-control" id="pc" ngModel (input)="getImageFile($event.target.files[0])">
+                </div>
+                <img [src]="imgUrl" alt="">
+
+
                 <div class="text-center">
                     <button type="submit" class="btn btn-success">Register</button>
                 </div>
